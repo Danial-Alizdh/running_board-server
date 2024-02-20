@@ -221,6 +221,7 @@ def main_page(request):
             user = UserProfile.objects.get(login_token=token)
             data = {
                 'username': user.username,
+                'email': user.email,
                 'admin': user.email == ADMIN_EMAIL,
             }
             return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
@@ -449,8 +450,8 @@ def user_information(request):
             elif user.role == 'actor':
                 data = Actor.objects.filter(user=user).first()
 
-            if data is None or data.count() == 0:
-                return JsonResponse({}, safe=False, status=status.HTTP_204_NO_CONTENT)
+            # if data is None or data.count() == 0:
+            #     return JsonResponse({}, safe=False, status=status.HTTP_204_NO_CONTENT)
 
             return JsonResponse(data.to_dict(), safe=False, status=status.HTTP_200_OK)
 
@@ -631,7 +632,10 @@ def change_credit(request):
         try:
             user = UserProfile.objects.get(login_token=request.data['login_token'])
             if user.phone_number == request.data['phone_number']:
-                user.hasCredit = request.data['hasCredit']
+                if request.data['hasCredit'] == "true":
+                    user.hasCredit = True
+                else:
+                    user.hasCredit = False
                 user.save()
                 return JsonResponse({'username': user.username}, safe=False, status=status.HTTP_200_OK)
         except UserProfile.DoesNotExist:
