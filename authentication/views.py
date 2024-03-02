@@ -222,6 +222,7 @@ def main_page(request):
             data = {
                 'username': user.username,
                 'email': user.email,
+                'hasCredit': user.hasCredit,
                 'admin': user.email == ADMIN_EMAIL,
             }
             return JsonResponse(data, safe=False, status=status.HTTP_200_OK)

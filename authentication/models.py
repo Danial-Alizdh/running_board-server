@@ -90,6 +90,7 @@ class UserProfile(models.Model):
             'image_profile': None if self.image_profile == '' else self.image_profile.url,
             'bio': self.bio,
             'role': self.role,
+            'hasCredit': self.hasCredit,
             'accepted': self.accepted,
             'rejected': self.rejected,
             'rate': self.rate,
